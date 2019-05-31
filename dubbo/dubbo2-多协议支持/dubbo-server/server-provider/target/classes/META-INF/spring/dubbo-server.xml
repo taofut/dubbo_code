@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://code.alibabatech.com/schema/dubbo  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--提供方信息-->
+    <dubbo:application name="dubbo-server" owner="taofut"/>
+
+    <!--注册中心 address="N/A"表示不指定-->
+    <dubbo:registry address="zookeeper://192.168.3.140:2181"/>
+
+    <!--多协议指定，同一个接口配置多个协议-->
+    <dubbo:protocol port="21880" name="dubbo"/>
+    <dubbo:protocol port="8080" name="hessian"/>
+
+    <!--当前创建服务的接口-->
+    <dubbo:service interface="com.ft.dubbo.IDemoService" ref="demoService" protocol="dubbo,hessian"/>
+    <!--<dubbo:service interface="com.ft.dubbo.IDemoService" ref="demoService" protocol="dubbo"/>-->
+    <!--<dubbo:service interface="com.ft.dubbo.IDemoService2" ref="demoService2" protocol="hessian"/>-->
+
+    <!--接口实现类-->
+    <bean id="demoService" class="com.ft.dubbo.DemoServerImp"/>
+    <bean id="demoService2" class="com.ft.dubbo.DemoServerImp2"/>
+
+    <!--
+    注册中心内容：（多协议不同接口）
+        com.ft.dubbo.IDemoService:
+        dubbo://192.168.226.1:20880/com.ft.dubbo.IDemoService%3Fanyhost%3Dtrue%26application%3Ddubbo-server%26dubbo%3D2.5.3%26interface%3Dcom.ft.dubbo.IDemoService%26methods%3DstartDemo%26owner%3Dtaofut%26pid%3D7772%26side%3Dprovider%26timestamp%3D1534429518842
+
+        com.ft.dubbo.IDemoService2:
+        hessian://192.168.226.1:80/com.ft.dubbo.IDemoService2%3Fanyhost%3Dtrue%26application%3Ddubbo-server%26dubbo%3D2.5.3%26interface%3Dcom.ft.dubbo.IDemoService2%26methods%3DstartDemo%26owner%3Dtaofut%26pid%3D7772%26side%3Dprovider%26timestamp%3D1534429519944
+    -->
+
+</beans>

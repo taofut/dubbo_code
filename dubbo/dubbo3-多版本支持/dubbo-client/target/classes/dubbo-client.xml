@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://code.alibabatech.com/schema/dubbo  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+        <!--提供方信息-->
+        <dubbo:application name="dubbo-client" owner="taofut"/>
+
+        <!--注册中心 address="N/A"表示不指定-->
+        <dubbo:registry address="zookeeper://192.168.3.140:2181"/>
+
+        <!--配置接口以及协议地址-->
+        <dubbo:reference interface="com.ft.dubbo.IDemoService" id="demoService" protocol="dubbo" check="false"/>
+
+        <!--
+                两个服务存在相互调用 比如订单调用商品，商品也可能调用订单
+                这时候不管怎么启动服务都会出错，因为彼此都依赖对方的服务
+                check="false",这样就不会去关心对应的服务是否启动
+        -->
+</beans>
